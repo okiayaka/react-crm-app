@@ -1,26 +1,70 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+const App = () => {
+  const [detas, setDetas] = React.useState([
+    "name",
+    "age",
+    "e-mail"
+  ])
+
+  const Form = (props) => {
+    const handleSubmit = (e) => {
+      e.preventDefault()
+
+      const newDetas = props.detas.slice()
+
+      const name = e.target.name.value
+      const age = e.target.age.value
+      const ad = e.target.ad.value
+
+      newDetas.push(name)
+
+      props.setDetas(newDetas)
+    }
+    return (
+      <>
+        <form onSubmit={handleSubmit}>
+          名前 : <input type="text" name="name" placeholder="お名前を入力"/> <br />
+          年齢 : <input type="tel" maxlength="3" placeholder="ご年齢を入力"/> <br />
+          メール: <input type="email" placeholder="e-mailアドレスを入力"/> <br />
+          <button type="submit">OK</button>
+        </form>
+      </>
+    )
+  }
+  
+  const List = (props) => {
+    return (
+      <>
+
+
+      <Btn></Btn>
+      </>
+    )
+  }
+
+  const Btn = (props) => {
+    return(
+      <>
+        <button> - </button>
+        <button> + </button>
+      </>
+    )
+  }
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section>
+      {/* データ入力フォーム */}
+      {/* <Form></Form> */}
+      <Form detas={detas} setDetas={setDetas}></Form>
+
+      {/* 入力されたデータを反映 */}
+      {/* <List></List> */}
+      <List detas={detas} setDetas={setDetas}></List>
+
+    </section>
   );
 }
 
-export default App;
+export default App
