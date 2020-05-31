@@ -2,56 +2,164 @@ import React from 'react';
 
 const App = () => {
   const [detas, setDetas] = React.useState([
-    "name",
-    "age",
-    "e-mail"
+    {
+      name:'satou', age:'25', email:'sat@gmail.com'
+    },
+    {
+      name:'abe', age:'48', email:'hiroshi@yahoo.co.jp'
+    },
   ])
 
+
+  // Formコンポーネント
   const Form = (props) => {
     const handleSubmit = (e) => {
+
       e.preventDefault()
 
-      const newDetas = props.detas.slice()
+      const addDetas = props.detas.slice()
 
       const name = e.target.name.value
       const age = e.target.age.value
       const ad = e.target.ad.value
 
-      newDetas.push(name)
+      // addDetas.push(name)
+      // addDetas.push(age)
+      // addDetas.push(ad)
 
-      props.setDetas(newDetas)
+      // addDetas.push(detas)
+
+      props.setDetas(addDetas)
     }
     return (
       <>
         <form onSubmit={handleSubmit}>
           名前 : <input type="text" name="name" placeholder="お名前を入力"/> <br />
-          年齢 : <input type="tel" maxlength="3" placeholder="ご年齢を入力"/> <br />
-          メール: <input type="email" placeholder="e-mailアドレスを入力"/> <br />
-          <button type="submit">OK</button>
+          年齢 : <input type="tel" name="age" maxlength="2" placeholder="年齢を入力"/> <br />
+          メール: <input type="email" name="ad" placeholder="e-mailアドレスを入力"/> <br />
+          <button type="submit">追加</button>
         </form>
       </>
     )
   }
-  
+
   const List = (props) => {
+    
+    // const userDeta = () => {
+    // }
+
+    // // ＋ボタンが押された時以下の処理を実行
+    //   const incBtn = () => { 
+    //     // 1.props.detas[index].ageの数を取得
+    //     const newAge = props.detas[index].age.value
+    //     // 2.取得した値に＋１する。
+    //     newAge ++
+    //   }
+
+    // カウントボタン
+    // 1.年齢のvalueを取得 <- 値の取得がうまくいっていない
+    // 2.+1する
+    
+      // const incBtn = (props) => { 
+      //   const newAge = props.detas[this.index].age.slice()
+      //   props.setDetas(newAge++)
+      // }
+
+      const incBtn = (props) => { 
+        const incAge = props.detas[this.index].age.value
+        props.setDetas(incAge++)
+      }
+    
+
+      const decBtn = (props) => { 
+        // const newAge = props.detas[this.index].age.slice()
+        // props.setDetas(newAge++)
+        // this.setDetas({count :this.detas.count -1})
+        // props.setDetas({ value: props.detas[this.index].age - 1})
+        const newAge = props.detas[this.index].age.value
+        props.setDetas(newAge - 1)
+        console.log( '-1')
+      }
+
+
     return (
+      // return内はconst書けない
       <>
 
+        {/* <ul><li></li></ul>をコピーする。
+        .slice()を使う。
+        切り返し処理＝ for? */}
+        {/* map = 新しい配列を生成 */}
+        {/* detas にindex番号を入れる */}
+        {/* 要素のindex番号を取得 */}
+        {/* index -> +1 */}
 
-      <Btn></Btn>
+        {/* ＋ボタンが押された時以下の処理を実行
+            const incBtn = () => { 
+              // 1.props.detas[index].ageの数を取得
+              const newAge = props.detas[index].age.value
+              // 2.（クリックしたら）取得した値に＋１する。
+              newAge ++
+        } */}
+
+        
+        {/* <ul>をあるだけ表示。detasにはindex番号を反映。 */}
+
+        {
+          // mapメソッド
+          // 既存の配列.map(処理) => 既存の配列に処理をして返してくれる。
+          // ？？.map((deta, index)？？
+          props.detas.map((deta, index) => {
+            return (
+              <>
+              <ul>
+                <li>名前 : {props.detas[index].name}</li>
+                <li>年齢 : {props.detas[index].age}</li>
+                {/* <li>年齢 : {props.detas[index].age.value}</li> */}
+                {/* <li>年齢 : {props.detas[index].age.value + 1}</li> */}
+
+                {/* {props.detas[index].age}の数を取得→1ずつ減らす、増やす処理（関数）。 */}
+                {/* <button onClick={decBtn}> - </button>
+                <button onClick={incBtn}> + </button> */}
+
+                <button onClick={decBtn}> - </button>
+                <button onClick={incBtn}> + </button>
+
+                {/* <button> - </button>
+                <button> + </button> */}
+
+                <li>メール : {props.detas[index].email}</li>
+              </ul>
+              <hr />
+              </>
+            )
+          })
+        }
+
+        {/* <ul>
+          <li>名前 : {props.detas[0].name}</li>
+          <li>年齢 : {props.detas[0].age}</li>
+
+            <button> - </button>
+            <button> + </button>
+
+          <li>メール : {props.detas[0].email}</li>
+        </ul>
+
+        <ul>
+          <li>名前 : {props.detas[1].name}</li>
+          <li>年齢 : {props.detas[1].age}</li>
+
+            <button> - </button>
+            <button> + </button>
+
+          <li>メール : {props.detas[1].email}</li>
+        </ul> */}
+
+
       </>
     )
   }
-
-  const Btn = (props) => {
-    return(
-      <>
-        <button> - </button>
-        <button> + </button>
-      </>
-    )
-  }
-  
 
   return (
     <section>
