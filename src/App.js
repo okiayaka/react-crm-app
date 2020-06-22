@@ -42,6 +42,30 @@ const App = () => {
         props.setDetas(addDetas)
 
 
+      // ---------form 追加ボタン押した時データ送信----------
+        fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; cherset=utf-8",
+          },
+          body: JSON.stringify({    //json形式＝オブジェクトっぽく書く？
+            // name: addDetas.name,
+            // age: addDetas.age,
+            // email: addDetas.email
+
+            // name: Form.setDetas
+            name: e.target.name.value,
+            age: e.target.age.value,
+            email: e.target.email.value
+          })
+        }).then(res => res.json())
+          .then(res => {
+            console.log(res.msg)
+          }).catch(err => console.errer(err))
+
+        console.log(fetch.body)
+      
+
 
 
     }
@@ -51,7 +75,8 @@ const App = () => {
           名前 : <input type="text" name="name" placeholder="お名前を入力"/> <br />
           年齢 : <input type="tel" name="age" maxlength="2" placeholder="年齢を入力"/> <br />
           メール: <input type="email" name="email" placeholder="e-mailアドレスを入力"/> <br />
-          <button type="submit" onClick={handleAdd}>追加</button>
+          {/* <button type="submit" onClick={handleAdd}>追加</button> */}
+          <button type="submit">追加</button>
         </form>
       </>
     )
@@ -147,6 +172,20 @@ const App = () => {
           // mapメソッド
           // 既存の配列.map(処理) => 既存の配列に処理をして返してくれる。
           // ？？.map((deta, index)？？
+
+          // 配列.map((value, index) => {}) valueが配列の要素で、indexがindex番号
+          // mapは配列の要素をひとつひとつ取り出して処理を行う関数。
+          // ひとつ要素を取り出して処理を行う際の「該当する要素」が第一引数で、「該当するindex番号」が第二引数。
+          // props.detas.map()の例だと、↓が配列。この場合、配列の要素が２つある。処理が行われる回数が2回。
+        // [
+        //   {
+        //     name: 'satou', age: '25', email: 'sat@gmail.com'
+        //   },
+        //   {
+        //     name: 'abe', age: '48', email: 'hiroshi@yahoo.co.jp'
+        //   },
+        // ]
+
           props.detas.map((deta, index) => {
             // detaをindex(ここでは[0]と[1])分、新しい配列にして生成。-----という意味？
             
@@ -159,22 +198,28 @@ const App = () => {
             //   // newAge.value = newAge + 1
             // }
 
-            const incBtn = (detas) => {
-              const newAge = parseInt(deta.age)
-              const countUp = () => {
-                newAge++
-                console.log(newAge)
-              }
-              countUp()
-              // console.log(newAge + 1)
-            }
+            // const incBtn = (detas) => {  //
+            //   // let newAge = parseInt(deta.age)  //同じ値のままになってる
+            //   const countUp = () => {
+            //     // newAge++
+            //     deta.age++
+            //     console.log(deta.age)
+            //   }
+            //   countUp()
+            //   // console.log(newAge + 1)
+            //   props.setDetas([detas.age])
+
+            //   // 1.データ(deats)をコピー  <-detasのアクセスに注意。propsを使うかどうか（コンポーネントがappと同じなのか）
+            //   // 2.該当するageのみ変更（++） <- detasを使用するので、該当するindex番号が必要。index番号を使うのに楽なのは、mapの内部。
+            //   // 3.データ(detas)を更新 <- setDetasのアクセスに注意。detasと同じアクセスの仕方にする。
+            // }
 
 
-            const decBtn = () => {
+            // const decBtn = () => {
               // const newAge = detas.age
               // console.log(newAge)  //undefined
               // console.log(newAge - 1)  //NaN
-            }
+            // }
             
             
 
@@ -188,71 +233,62 @@ const App = () => {
                 {/* <li>年齢 : {props.detas[index].age.value + 1}</li> */}
 
                 {/* {props.detas[index].age}の数を取得→1ずつ減らす、増やす処理（関数）。 */}
-                {/* <button onClick={decBtn}> - </button>
-                <button onClick={incBtn}> + </button> */}
 
-                {/* <button onClick={() => setCount(count + 1)}> - </button> */}
+                <button onClick={ () => {
+                    const newDetas = props.detas.slice()
+                    newDetas[index].age--
+                    props.setDetas(newDetas)
+                }}> - </button>
+                
+                <button onClick={ () => {
 
-
-                <button onClick={decBtn}> - </button>
-                <button onClick={incBtn}> + </button>
+                  // 1.データ(deats)をコピー  <-detasのアクセスに注意。propsを使うかどうか（コンポーネントがappと同じなのか）
+                  const newDetas = props.detas.slice()
+                  // 2.該当するageのみ変更（++） <- detasを使用するので、該当するindex番号が必要。index番号を使うのに楽なのは、mapの内部。
+                  newDetas[index].age++
+                  // 3.データ(detas)を更新 <- setDetasのアクセスに注意。detasと同じアクセスの仕方にする。
+                  props.setDetas(newDetas)
+                }
+                }> + </button>
 
                 <li>メール : {props.detas[index].email}</li>
               </ul>
+
+                {/* HTTPメソッド delete*/}
+                <button onClick={handleDelete}>DELETE</button>
               <hr />
               </>
             )
           })
         }
 
-        {/* <ul>
-          <li>名前 : {props.detas[0].name}</li>
-          <li>年齢 : {props.detas[0].age}</li>
-
-            <button> - </button>
-            <button> + </button>
-
-          <li>メール : {props.detas[0].email}</li>
-        </ul>
-
-        <ul>
-          <li>名前 : {props.detas[1].name}</li>
-          <li>年齢 : {props.detas[1].age}</li>
-
-            <button> - </button>
-            <button> + </button>
-
-          <li>メール : {props.detas[1].email}</li>
-        </ul>  */}
-
-
       </>
     )
   }
 
 
-  // ---------form 追加ボタン押した時データ送信----------
-  const handleAdd = () => {
-    fetch("/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; cherset=utf-8",
-      },
-      body: JSON.stringify({    //json形式＝オブジェクトっぽく書く？
-        // name: addDetas.name,
-        // age: addDetas.age,
-        // email: addDetas.email
+  // // ---------form 追加ボタン押した時データ送信----------
+  // const handleAdd = () => {
+  //   fetch("/api/users", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json; cherset=utf-8",
+  //     },
+  //     body: JSON.stringify({    //json形式＝オブジェクトっぽく書く？
+  //       // name: addDetas.name,
+  //       // age: addDetas.age,
+  //       // email: addDetas.email
 
-        // name: Form.setDetas
-        name: Form.addDetas  // undefinedのデータを受け取りました
-      })
-    }).then(res => res.json())
-      .then(res => {
-        console.log(res.msg)
-      }).catch(err => console.errer(err))
+  //       // name: Form.setDetas
+  //       name: Form.addDetas  // undefinedのデータを受け取りました
+  //     })
+  //   }).then(res => res.json())
+  //     .then(res => {
+  //       console.log(res.msg)
+  //     }).catch(err => console.errer(err))
 
-    console.log(fetch.body)
-  }
+  //   console.log(fetch.body)
+  // }
 
 
   // --------------------------------------
@@ -280,8 +316,6 @@ const App = () => {
   }
 
 
-
-
     // データの送信
     // データのクライアント側からサーバー側に送る処理
     const handlePost = () => {
@@ -301,6 +335,24 @@ const App = () => {
       }).catch(err=>console.errer(err))
     }
 
+    // データ削除（DELETE）
+    const handleDelete = () => {
+      fetch("/api/users", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json; cherset=utf-8",
+        },
+        // deta: {
+        //   id,
+        // }
+      })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res.msg) 
+      })
+      .catch(err => console.error(err))
+    }
+
 
 
 
@@ -318,6 +370,9 @@ const App = () => {
       <button onClick={handleGet}>GET</button>
       {/* HTTPメソッド */}
       <button onClick={handlePost}>POST</button>
+
+      {/* HTTPメソッド delete
+      <button onClick={handleDelete}>DELETE</button> */}
 
     </section>
   );
