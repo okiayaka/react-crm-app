@@ -332,7 +332,7 @@ const App = () => {
       }).then(res=>res.json())
       .then(res=> {
         console.log(res.msg)
-      }).catch(err=>console.errer(err))
+      }).catch(err=>console.error(err))
     }
 
     // データ削除（DELETE）
@@ -343,8 +343,12 @@ const App = () => {
           "Content-Type": "application/json; cherset=utf-8",
         },
         // deta: {
-        //   id,
-        // }
+        //   id: 9999,
+        // },
+        body: JSON.stringify({
+          id: detas.index
+        })
+
       })
       .then(res => res.json())
       .then(res => {
