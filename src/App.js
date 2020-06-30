@@ -2,6 +2,7 @@ import React from 'react';
 
 const App = () => {
   const [detas, setDetas] = React.useState([
+    // detaのidなし(データベース上に)
     {
       name:'satou', age:'25', email:'sat@gmail.com'
     },
@@ -145,8 +146,8 @@ const App = () => {
       // }
 
 
-    return (
       // return内はconst書けない
+    return (
       <>
 
         {/* <ul><li></li></ul>をコピーする。
@@ -221,7 +222,27 @@ const App = () => {
               // console.log(newAge - 1)  //NaN
             // }
             
-            
+            const handleDelete = () => {
+              console.log(deta._id)
+              fetch("/api/users", {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json; cherset=utf-8",
+                },
+                // deta: {
+                //   id: 9999,
+                // },
+                body: JSON.stringify({
+                  id: deta._id
+                })
+
+              })
+                .then(res => res.json())
+                .then(res => {
+                  console.log(res.msg)
+                })
+                .catch(err => console.error(err))
+            }
 
             
             return (
@@ -336,26 +357,27 @@ const App = () => {
     }
 
     // データ削除（DELETE）
-    const handleDelete = () => {
-      fetch("/api/users", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json; cherset=utf-8",
-        },
-        // deta: {
-        //   id: 9999,
-        // },
-        body: JSON.stringify({
-          id: detas.index
-        })
+    // const handleDelete = () => {
+    //   // console.log(props.detas.index)
+    //   fetch("/api/users", {
+    //     method: "DELETE",
+    //     headers: {
+    //       "Content-Type": "application/json; cherset=utf-8",
+    //     },
+    //     // deta: {
+    //     //   id: 9999,
+    //     // },
+    //     body: JSON.stringify({
+    //       // id: props.detas.index
+    //     })
 
-      })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res.msg) 
-      })
-      .catch(err => console.error(err))
-    }
+    //   })
+    //   .then(res => res.json())
+    //   .then(res => {
+    //     console.log(res.msg) 
+    //   })
+    //   .catch(err => console.error(err))
+    // }
 
 
 
